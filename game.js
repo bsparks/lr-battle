@@ -16,6 +16,8 @@ class Game {
         this.currentState = STATES.PRESTART;
         this._started = false;
 
+        this.input = new InputMgr(this);
+
         this.loader = new AssetLoader('images/');
 
         this.scene = new SceneObject(this);
@@ -34,6 +36,7 @@ class Game {
     }
 
     update() {
+        this.input.update();
         this.scene.update();
     }
 

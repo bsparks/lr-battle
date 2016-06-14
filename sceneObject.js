@@ -12,6 +12,8 @@ class SceneObject {
 
     add(child) {
         this.children.push(child);
+
+        return child;
     }
 
     update() {

@@ -12,6 +12,10 @@ class AssetLoader {
         this.assets.push(asset);
     }
 
+    getCache(key) {
+        return this.cache[key];
+    }
+
     _loadImage(key, path) {
         let loader = this;
         let promise = new Promise((resolve, reject) => {

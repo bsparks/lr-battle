@@ -2,8 +2,9 @@
 
 let STATES = {
     PRESTART: 0,
-    MENU: 1,
-    PLAY: 2
+    LOADED: 1,
+    MENU: 2,
+    PLAY: 3
 };
 
 class Game {
@@ -13,21 +14,48 @@ class Game {
         this.height = height;
 
         this.currentState = STATES.PRESTART;
+        this._started = false;
 
         this.loader = new AssetLoader('images/');
+
+        this.scene = new SceneObject(this);
+    }
+
+    _loop() {
+        requestAnimationFrame(this._loop.bind(this));
+
+        this.update();
+        this.render();
+    }
+
+    _clear(color = '#000') {
+        this.ctx.fillStyle = color;
+        this.ctx.fillRect(0, 0, this.width, this.height);
+    }
+
+    update() {
+        this.scene.update();
+    }
+
+    render() {
+        this._clear();
+        this.scene.render();
     }
 
     start() {
+        if (this._started) {
+            return;
+        }
+        this._started = true;
+
+        this.canvas = document.getElementById(this.canvasId);
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+        this.ctx = this.canvas.getContext('2d');
+
         this.loader.load().then(() => {
-            this.canvas = document.getElementById(this.canvasId);
-            this.canvas.width = this.width;
-            this.canvas.height = this.height;
-            this.ctx = this.canvas.getContext('2d');
-
-            this.ctx.fillStyle = '#000';
-            this.ctx.fillRect(0, 0, this.width, this.height);
-
-            this.ctx.drawImage(this.loader.cache['logo'], 10, 10);
+            this.currentState = STATES.LOADED;
+            this._loop();
         }, err => console.debug(err));
     }
 

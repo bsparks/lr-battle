@@ -32,7 +32,9 @@ class PlayScene extends SceneObject {
     }
 
     init() {
-        this.locPos = {x: 80, y: 16};
+        this.log = [];
+
+        this.locPos = { x: 80, y: 16 };
 
         this.locations = {
             town: new Location({
@@ -46,18 +48,70 @@ class PlayScene extends SceneObject {
                 img: 'forest',
                 descr: 'Overgrown and ancient, the woods holds many dark and mysterious secrets',
                 battleMsg: 'leaps from the trees'
+            }),
+            mountain: new Location({
+                name: 'Grizzlebush Mountains',
+                img: 'mountain',
+                descr: 'Littered with scrub bushes and rocks, the mountain is home to unspeakable horrors.',
+                battleMsg: 'tumbles out from behind a rock'
+            }),
+            shop: new Location({
+
+            }),
+            temple: new Location({
+
             })
         };
 
+        this.logMsg('Welcome to Legendary Realms! v0.2-experi-alpha-dynamo');
+        this.logMsg('Your travels have brought you to a land of mystery and wonder.');
+        this.logMsg('It has been many moons since you left your home in search of adventure.');
+
         this.locSprite = this.add(new Sprite(this.game, 'town', this.locPos.x, this.locPos.y));
+
+        this._changeLoc(this.locations.town);
+
+        this.game.input.onLeftMouseDown.add(() => {
+            if (this.loc !== this.locations.forest) {
+                this._changeLoc(this.locations.forest);
+            }
+        });
+    }
+
+    logMsg(msg) {
+        this.log.push(msg);
+        while (this.log.length > 10) {
+            this.log.shift();
+        }
+    }
+
+    _changeLoc(toLoc) {
+        this.loc = toLoc;
+        this.locSprite.key = toLoc.img;
+
+        this.logMsg(`You arrive at ${toLoc.name}`);
+        this.logMsg(toLoc.descr);
     }
 
     update() {
-        let mouse = this.game.input.mouse;
-        if (mouse.left.down && mouse.left.duration > 5) {
-            console.debug('mouse', mouse.left.duration);
-            this.locSprite.key = 'forest';
-        }
+
+    }
+
+    _renderLog() {
+        let start = { x: 16, y: 512 - 96 };
+
+        this.log.forEach((msg, i) => {
+            let x = start.x;
+            let y = start.y + (i * 16);
+
+            this.game.print(x, y, msg);
+        });
+    }
+
+    render() {
+        super.render();
+
+        this._renderLog();
     }
 }
 

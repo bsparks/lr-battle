@@ -10,6 +10,9 @@ class InputMgr {
         document.addEventListener('mousemove', this._onMouseMove.bind(this));
         document.addEventListener('mousedown', this._onMouseDown.bind(this));
         document.addEventListener('mouseup', this._onMouseUp.bind(this));
+
+        this.onLeftMouseDown = new Signal();
+        this.onRightMouseDown = new Signal();
     }
 
     update() {
@@ -35,12 +38,19 @@ class InputMgr {
         if (e.button === 0) {
             mouseState.left.down = true;
             mouseState.left.pos = mouseState.downPos;
+
+            this.onLeftMouseDown.dispatch();
         }
 
         if (e.button === 1) {
             mouseState.right.down = true;
             mouseState.right.pos = mouseState.downPos;
+
+            this.onRightMouseDown.dispatch();
         }
+
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     _onMouseUp(e) {

@@ -3,6 +3,7 @@
 let game = new Game('viewport');
 
 game.loader.add('image', 'logo', 'logo1.png');
+game.loader.add('image', 'menu_icons', 'townactions.png');
 // locations
 game.loader.add('image', 'town', 'town.gif');
 game.loader.add('image', 'shop', 'shop.gif');
@@ -76,6 +77,9 @@ class PlayScene extends SceneObject {
                 this._changeLoc(this.locations.forest);
             }
         });
+
+        this.add(new Sprite(this.game, 'menu_icons', 16, 16, 24, 32));
+        this.add(new Sprite(this.game, 'menu_icons', 40, 16, 34, 32));
     }
 
     logMsg(msg) {

@@ -78,8 +78,10 @@ class PlayScene extends SceneObject {
             }
         });
 
-        this.add(new Sprite(this.game, 'menu_icons', 16, 16, 24, 32));
-        this.add(new Sprite(this.game, 'menu_icons', 40, 16, 34, 32));
+        let icon = this.add(new Sprite(this.game, 'menu_icons', 16, 16, 35, 32));
+        icon.onLeftMouseDown.add(() => this.logMsg('clicked the icon!'));
+
+        this.add(new Sprite(this.game, 'menu_icons', 40, 16, 47, 32));
     }
 
     logMsg(msg) {
@@ -95,10 +97,6 @@ class PlayScene extends SceneObject {
 
         this.logMsg(`You arrive at ${toLoc.name}`);
         this.logMsg(toLoc.descr);
-    }
-
-    update() {
-
     }
 
     _renderLog() {

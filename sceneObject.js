@@ -17,7 +17,7 @@ class SceneObject {
     }
 
     update() {
-
+        this.children.forEach(child => child.update());
     }
 
     render() {

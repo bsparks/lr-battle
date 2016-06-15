@@ -72,16 +72,16 @@ class PlayScene extends SceneObject {
 
         this._changeLoc(this.locations.town);
 
-        this.game.input.onLeftMouseDown.add(() => {
+        this.game.input.onLeftMouseDown.addOnce(() => {
+            console.debug('game click');
             if (this.loc !== this.locations.forest) {
                 this._changeLoc(this.locations.forest);
             }
         });
 
-        let icon = this.add(new Sprite(this.game, 'menu_icons', 16, 16, 35, 32));
-        icon.onLeftMouseDown.add(() => this.logMsg('clicked the icon!'));
-
-        this.add(new Sprite(this.game, 'menu_icons', 40, 16, 47, 32));
+        let icon = this.add(new Sprite(this.game, 'menu_icons', 16, 16, 58, 32));
+        icon.onLeftMouseDown.add(() => this.logMsg('clicked the hero!'));
+        let text = this.add(new Text(this.game, 'Warspawn', 16, 40));
     }
 
     logMsg(msg) {
@@ -117,16 +117,23 @@ class PlayScene extends SceneObject {
     }
 }
 
-let playScene = new PlayScene(game);
+class TitleScene extends SceneObject {
+    constructor(game) {
+        super(game);
 
-let titleScene = new SceneObject(game);
-titleScene.add(new Sprite(game, 'logo', 50, 200));
-titleScene.update = function() {
-    let input = this.game.input;
-    if (input.mouse.left.down) {
-        this.game.scene = playScene;
+        this.init();
     }
-};
+
+    init() {
+        this.game.input.onLeftMouseDown.addOnce(() => {
+            this.game.scene = new PlayScene(game);
+        });
+
+        this.add(new Sprite(this.game, 'logo', 50, 200));
+    }
+}
+
+let titleScene = new TitleScene(game);
 
 game.scene = titleScene;
 

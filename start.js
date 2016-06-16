@@ -72,16 +72,29 @@ class PlayScene extends SceneObject {
 
         this._changeLoc(this.locations.town);
 
+        let icon = this.add(new Sprite(this.game, 'menu_icons', 16, 16, 58, 32));
+        icon.onLeftMouseDown.add(() => this.logMsg('clicked the hero!'));
+        let text = this.add(new Text(this.game, 'Warspawn', 16, 48));
+
+        let mob = this.add(new Sprite(this.game, 'skeleton', 360, 160));
+        mob.enabled = false;
+
         this.game.input.onLeftMouseDown.addOnce(() => {
             console.debug('game click');
             if (this.loc !== this.locations.forest) {
                 this._changeLoc(this.locations.forest);
+                mob.enabled = true;
             }
         });
+    }
 
-        let icon = this.add(new Sprite(this.game, 'menu_icons', 16, 16, 58, 32));
-        icon.onLeftMouseDown.add(() => this.logMsg('clicked the hero!'));
-        let text = this.add(new Text(this.game, 'Warspawn', 16, 40));
+    startEncounter() {
+        if (this.isInCombat) {
+            return;
+        }
+
+        this.isInCombat = true;
+
     }
 
     logMsg(msg) {

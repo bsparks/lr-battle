@@ -54,6 +54,10 @@ class Sprite extends SceneObject {
     }
 
     update() {
+        if (!this.enabled) {
+            return;
+        }
+
         let img = this.game.loader.getCache(this.key),
             width = img.width,
             height = img.height;
@@ -76,6 +80,9 @@ class Sprite extends SceneObject {
     }
 
     render() {
+        if (!this.enabled || !this.visible) {
+            return;
+        }
         let img = this.game.loader.getCache(this.key);
 
         if (!this._renderParams) {

@@ -8,6 +8,9 @@ class SceneObject {
         this.pos = {x, y};
 
         this.children = [];
+
+        this.enabled = true;
+        this.visible = true;
     }
 
     add(child) {
@@ -17,10 +20,17 @@ class SceneObject {
     }
 
     update() {
+        if (!this.enabled) {
+            return;
+        }
         this.children.forEach(child => child.update());
     }
 
     render() {
+        if (!this.enabled || !this.visible) {
+            return;
+        }
+
         this.game.ctx.save();
         this.game.ctx.translate(this.pos.x, this.pos.y);
         this.children.forEach(child => child.render());

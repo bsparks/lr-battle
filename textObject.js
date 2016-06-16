@@ -8,6 +8,10 @@ class Text extends SceneObject {
     }
 
     render() {
+        if (!this.enabled || !this.visible) {
+            return;
+        }
+
         this.game.ctx.save();
         this.game.ctx.translate(this.pos.x, this.pos.y);
         this.game.ctx.fillStyle = '#fff';

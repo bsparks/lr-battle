@@ -142,6 +142,40 @@ class Actor {
 
         return item;
     }
+
+    equip(item) {
+        if (this.inv.indexOf(item) < 0) {
+            return;
+        }
+
+        this.equipment[item.slot] = item;
+    }
+
+    get armor() {
+        let total = 0;
+
+        if (this.equipment.head) {
+            total += this.equipment.head.armor;
+        }
+
+        if (this.equipment.body) {
+            total += this.equipment.head.body;
+        }
+
+        if (this.equipment.feet) {
+            total += this.equipment.feet.armor;
+        }
+
+        return total;
+    }
+
+    get dmg() {
+        if (this.equipment.weapon) {
+            return this.equipment.weapon.dmg;
+        }
+
+        return '1d2'; // fists of fury
+    }
 }
 
 class Monster extends Actor {
@@ -257,6 +291,10 @@ function showCreate() {
     createChar.giveItem(new Item(items.dagger0));
     createChar.giveItem(new Item(items.body0));
 
+    for(let item of createChar.inv) {
+        createChar.equip(item);
+    }
+
     reroll();
     setActiveInfo('create-char');
 }
@@ -295,8 +333,17 @@ function getExpNeeded(level) {
 function roll(dice) {
     let split = dice.split('d'),
         num = parseInt(split[0], 10),
-        die = parseInt(split[1], 10),
+        die,
+        bonus = 0,
         result = 0;
+
+    if(split[1].indexOf('+') >= 0) {
+        let mod = split[1].split('+');
+        die = parseInt(mod[0], 10);
+        bonus = parseInt(mod[1], 10);
+    } else {
+        die = parseInt(split[1], 10);
+    }
 
     for (let i = 0; i < num; i++) {
         result += Math.floor(Math.random() * die) + 1;
@@ -305,6 +352,8 @@ function roll(dice) {
     if (num === 1 && die === 20 && result === 20) {
         console.debug('NATURAL TWENTY!!! BOOM BABY!');
     }
+
+    result += bonus;
 
     return result;
 }
@@ -393,7 +442,7 @@ let mobs = {
         gold: '1d10',
         str: 8,
         end: 5,
-        spd: 2,
+        spd: 12,
         mhp: '1d12',
         img: 'skeleton.gif',
         desc: 'A minion of the undead. Reanimated for your killing pleasure. heh...'
@@ -402,9 +451,9 @@ let mobs = {
         name: 'Goblin',
         exp: 5,
         gold: '1d6',
-        str: 7,
+        str: 5,
         end: 5,
-        spd: 5,
+        spd: 15,
         mhp: '2d4',
         img: 'goblin2.png',
         desc: 'A nasty little green thing.'
@@ -480,9 +529,27 @@ function advanceCombatTurn() {
 
 function combatMonster() {
     // ai?
-    let attackRoll = roll('1d20'),
+    let spdMod = Math.floor(monster.spd / 6),
+        strMod = Math.floor(monster.str / 6),
+        attackRoll = roll(`1d20`),
         dmgRoll = roll(monster.dmg),
         critical = attackRoll === 20 ? 2 : 1;
+
+    printMsg(`The ${monster.name} attacks you...`);
+
+    if (attackRoll + spdMod > player.spd) {
+        let dmg = dmgRoll + strMod;
+        player.damage(dmg);
+        printMsg(`and hits for ${dmg} damage.`);
+        if (!player.alive) {
+            playerDied();
+        } else {
+            advanceCombatTurn();
+        }
+    } else {
+        printMsg('and misses!');
+        advanceCombatTurn();
+    }
 }
 
 function combatFight() {

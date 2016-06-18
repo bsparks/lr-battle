@@ -1,3 +1,7 @@
+const ITEM_TYPES = {
+
+};
+
 class Item {
     constructor({
         name = 'Item',

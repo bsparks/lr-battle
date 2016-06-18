@@ -1,10 +1,45 @@
-function default_item() {
-    this.name = '';
-    this.desc = '';
-    this.cost = 0;
-    this.mod = 0;
-    this.img = '';
+class Item {
+    constructor({
+        name = 'An Item',
+        desc = 'An amorphous blob of ether',
+        cost = 1,
+        img = '',
+        dmg = 1, // heals or hurts
+        armor = 0,
+        slot = 'weapon'
+    } = {}) {
+        Object.assign(this, {
+            name, desc, cost, img, dmg, slot, armor
+        });
+    }
 }
+
+let items = {
+    dagger0: {
+        name: 'rusty dagger',
+        desc: 'old and worn it gets the job done, barely...',
+        cost: 1,
+        img: 'dagger.gif',
+        dmg: '1d4',
+        slot: 'weapon'
+    },
+    axe0: {
+        name: 'hand axe',
+        desc: 'good for chopping wood, and heads',
+        cost: 5,
+        img: 'axe.png',
+        dmg: '1d6',
+        slot: 'weapon'
+    },
+    body0: {
+        name: 'cloth clothes',
+        desc: 'a simple shirt and pants to cover you up',
+        cost: 1,
+        img: 'clothes.png',
+        armor: 0,
+        slot: 'body'
+    }
+};
 
 class Actor {
     constructor({
@@ -19,9 +54,22 @@ class Actor {
         mhp = 1,
         potion = 0,
         img = '',
-        desc = ''
+        desc = '',
+        equipment = {
+            head: null,
+            body: null,
+            feet: null,
+            ring: null,
+            weapon: null,
+            shield: null
+        },
+        inv = []
     } = {}) {
-        Object.assign(this, { name, level, exp, gold, str, end, spd, hp, mhp, potion, img, desc });
+        Object.assign(this, {
+            name, level, exp, gold, str, end, spd,
+            hp, mhp, potion, img, desc, equipment,
+            inv
+        });
 
         // better start this way!
         this.alive = true;
@@ -75,6 +123,24 @@ class Actor {
         if (this.hp > this.mhp) {
             this.hp = this.mhp;
         }
+    }
+
+    giveItem(item) {
+        this.inv.push(item);
+    }
+
+    removeItem(item) {
+        if (this.inv.indexOf(item) < 0) {
+            return;
+        }
+
+        if(this.equipment[item.slot] === item) {
+            this.equipment[item.slot] = null;
+        }
+
+        this.inv.splice(this.inv.indexOf(item), 1);
+
+        return item;
     }
 }
 
@@ -182,8 +248,18 @@ var locations = {
     }
 };
 
-var createChar = new Player(),
+var createChar,
     player;
+
+function showCreate() {
+    createChar = new Player();
+
+    createChar.giveItem(new Item(items.dagger0));
+    createChar.giveItem(new Item(items.body0));
+
+    reroll();
+    setActiveInfo('create-char');
+}
 
 function reroll() {
     createChar.str = roll('3d6');
@@ -260,11 +336,6 @@ function setActiveInfo(info) {
             child.classList.add('hide');
         }
     }
-}
-
-function showCreate() {
-    reroll();
-    setActiveInfo('create-char');
 }
 
 function showAbout() {
@@ -379,7 +450,7 @@ function startCombat(mob) {
     monsterEl = el;
     el.src = `images/${mob.img}`;
     el.classList.remove('hide');
-    
+
     activeCommands('combat-commands');
 }
 
@@ -401,6 +472,17 @@ function advanceCombatTurn() {
     } else {
         whosTurn = 'player';
     }
+
+    if (whosTurn === 'monster') {
+        combatMonster();
+    }
+}
+
+function combatMonster() {
+    // ai?
+    let attackRoll = roll('1d20'),
+        dmgRoll = roll(monster.dmg),
+        critical = attackRoll === 20 ? 2 : 1;
 }
 
 function combatFight() {

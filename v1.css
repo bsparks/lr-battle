@@ -1,5 +1,11 @@
 body {
-    background: #000;
+    background: #aaa;
+}
+
+.wrapper {
+    width: 1024px;
+    height: 768px;
+    background-color: #000;
 }
 
 #charsheet ul {
@@ -90,8 +96,24 @@ body {
     display: none;
 }
 
-.monster-image {
-    position: absolute;
-    top: 18%;
-    left: 47%;
+.actor-image {
+    position: relative;
+    top: 35%;
+}
+
+.actor-image.hide {
+    display: inline-block;
+    visibility: hidden;
+}
+
+.actor-image.one {
+    left: 10%;
+}
+
+.actor-image.two {
+    left: 20%;
+}
+
+.actor-image.three {
+    left: 30%;
 }

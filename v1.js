@@ -341,6 +341,7 @@ let mobs = {
 };
 
 var monster = null,
+    monsterEl = null,
     combatTurn = 0,
     whosTurn = 'player';
 
@@ -371,9 +372,14 @@ function startCombat(mob) {
     // base turn on speed?
     whosTurn = 'player';
     printMsg(`A ${mob.name} ${currentLoc.encounterMsg}!`);
-    let el = document.getElementById('monster');
+
+    let slot = roll('1d3');
+
+    let el = document.getElementById(`actor${slot}`);
+    monsterEl = el;
     el.src = `images/${mob.img}`;
     el.classList.remove('hide');
+    
     activeCommands('combat-commands');
 }
 
@@ -381,8 +387,10 @@ function endCombat() {
     monster = null;
     combatTurn = 0;
     whosTurn = 'player';
-    let el = document.getElementById('monster');
-    el.classList.add('hide');
+
+    monsterEl.classList.add('hide');
+    monsterEl = null;
+
     goLocation(currentLoc.key);
 }
 

@@ -8,88 +8,92 @@
 </head>
 
 <body>
-    <div id="col1" class="col">
-        <div id="infview" class="view-panel">
-            <div class="create-char hide">
-                <p>Name: <input id="createName" /></p>
-                <p>STR: <span id="createStr">0</span></p>
-                <p>END: <span id="createEnd">0</span></p>
-                <p>SPD: <span id="createSpd">0</span></p>
-                <p>HP: <span id="createHP">0</span></p>
-                <p>Gold: <span id="createGold">0</span></p>
-                <button onclick="reroll();">Reroll</button> <button onclick="acceptCreate();">Accept</button>
-            </div>
+    <div class="wrapper">
+        <div id="col1" class="col">
+            <div id="infview" class="view-panel">
+                <div class="create-char hide">
+                    <p>Name: <input id="createName" /></p>
+                    <p>STR: <span id="createStr">0</span></p>
+                    <p>END: <span id="createEnd">0</span></p>
+                    <p>SPD: <span id="createSpd">0</span></p>
+                    <p>HP: <span id="createHP">0</span></p>
+                    <p>Gold: <span id="createGold">0</span></p>
+                    <button onclick="reroll();">Reroll</button> <button onclick="acceptCreate();">Accept</button>
+                </div>
 
-            <div class="about">
-                <p>Battle Quest v0.88 alpha-foo</p>
-                <p>Programming: Ben (Warspawn) Sparks</p>
-                <p>A simple javascript RPG, one that I created long ago. I have since revived it for the sake of @Vox and myself
-                    for learning and whatnot.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="col2" class="col">
-        <div id="gfxview" class="view-panel">
-            <img id="monster" class="monster-image hide" src="images/skeleton.gif" />
-        </div>
-
-        <div id="msgview" class="view-panel">
-            <ul id="msglog"></ul>
-        </div>
-    </div>
-
-    <div id="col3" class="col">
-        <div id="cmdview" class="view-panel">
-            <div class="start-commands">
-                <button onclick="showCreate();">New</button> <br>
-                <button onclick="showDocs();">Manual</button> <br>
-                <button onclick="showAbout();">About</button>
-            </div>
-            <div class="town-commands hide">
-                <button onclick="goLocation('forest')">Forest</button> <br>
-                <button onclick="goLocation('mountain')">Mountain</button> <br>
-                <button onclick="doExplore()">Explore</button> <br>
-                <button onclick="goLocation('shop')">Shop</button> <br>
-                <button onclick="goLocation('church')">Church</button> <br>
-                <button onclick="useItem()">Item</button> <br>
-                <button onclick="showInv()">Inventory</button>
-            </div>
-            <div class="explore-commands hide">
-                <button onclick="doExplore()">Explore</button> <br>
-                <button onclick="useItem()">Item</button> <br>
-                <button onclick="goLocation('town')">Town</button>
-            </div>
-            <div class="shop-commands hide">
-                <button onclick="doBrowse()">Browse Wares</button> <br>
-                <button onclick="doExplore()">Explore</button> <br>
-                <button onclick="useItem()">Item</button> <br>
-                <button onclick="goLocation('town')">Town</button>
-            </div>
-            <div class="church-commands hide">
-                <button onclick="doChurchServices()">Services</button> <br>
-                <button onclick="doExplore()">Explore</button> <br>
-                <button onclick="useItem()">Item</button> <br>
-                <button onclick="goLocation('town')">Town</button>
-            </div>
-            <div class="combat-commands hide">
-                <button onclick="combatFight()">Fight</button> <br>
-                <button onclick="combatItem()">Item</button> <br>
-                <button onclick="combatRun()">Run</button>
+                <div class="about">
+                    <p>Battle Quest v0.88 alpha-foo</p>
+                    <p>Programming: Ben (Warspawn) Sparks</p>
+                    <p>A simple javascript RPG, one that I created long ago. I have since revived it for the sake of @Vox and myself
+                        for learning and whatnot.</p>
+                </div>
             </div>
         </div>
 
-        <div id="charsheet" class="view-panel">
-            <ul>
-                <li id="playerName"></li>
-                <li id="playerLevel"></li>
-                <li id="playerExp"></li>
-                <li id="playerStr"></li>
-                <li id="playerEnd"></li>
-                <li id="playerSpd"></li>
-                <li id="playerGold"></li>
-                <li id="playerHP"></li>
-            </ul>
+        <div id="col2" class="col">
+            <div id="gfxview" class="view-panel">
+                <img id="actor1" class="actor-image one hide" src="images/skeleton.gif" />
+                <img id="actor2" class="actor-image two hide" src="images/skeleton.gif" />
+                <img id="actor3" class="actor-image three hide" src="images/skeleton.gif" />
+            </div>
+
+            <div id="msgview" class="view-panel">
+                <ul id="msglog"></ul>
+            </div>
+        </div>
+
+        <div id="col3" class="col">
+            <div id="cmdview" class="view-panel">
+                <div class="start-commands">
+                    <button onclick="showCreate();">New</button> <br>
+                    <button onclick="showDocs();">Manual</button> <br>
+                    <button onclick="showAbout();">About</button>
+                </div>
+                <div class="town-commands hide">
+                    <button onclick="goLocation('forest')">Forest</button> <br>
+                    <button onclick="goLocation('mountain')">Mountain</button> <br>
+                    <button onclick="doExplore()">Explore</button> <br>
+                    <button onclick="goLocation('shop')">Shop</button> <br>
+                    <button onclick="goLocation('church')">Church</button> <br>
+                    <button onclick="useItem()">Item</button> <br>
+                    <button onclick="showInv()">Inventory</button>
+                </div>
+                <div class="explore-commands hide">
+                    <button onclick="doExplore()">Explore</button> <br>
+                    <button onclick="useItem()">Item</button> <br>
+                    <button onclick="goLocation('town')">Town</button>
+                </div>
+                <div class="shop-commands hide">
+                    <button onclick="doBrowse()">Browse Wares</button> <br>
+                    <button onclick="doExplore()">Explore</button> <br>
+                    <button onclick="useItem()">Item</button> <br>
+                    <button onclick="goLocation('town')">Town</button>
+                </div>
+                <div class="church-commands hide">
+                    <button onclick="doChurchServices()">Services</button> <br>
+                    <button onclick="doExplore()">Explore</button> <br>
+                    <button onclick="useItem()">Item</button> <br>
+                    <button onclick="goLocation('town')">Town</button>
+                </div>
+                <div class="combat-commands hide">
+                    <button onclick="combatFight()">Fight</button> <br>
+                    <button onclick="combatItem()">Item</button> <br>
+                    <button onclick="combatRun()">Run</button>
+                </div>
+            </div>
+
+            <div id="charsheet" class="view-panel">
+                <ul>
+                    <li id="playerName"></li>
+                    <li id="playerLevel"></li>
+                    <li id="playerExp"></li>
+                    <li id="playerStr"></li>
+                    <li id="playerEnd"></li>
+                    <li id="playerSpd"></li>
+                    <li id="playerGold"></li>
+                    <li id="playerHP"></li>
+                </ul>
+            </div>
         </div>
     </div>
 

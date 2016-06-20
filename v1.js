@@ -457,6 +457,28 @@ let mobs = {
         mhp: '2d4',
         img: 'goblin2.png',
         desc: 'A nasty little green thing.'
+    },
+    kobold: {
+        name: 'Kobold',
+        exp: 5,
+        gold: '2d4',
+        str: 5,
+        end: 5,
+        spd: 13,
+        mhp: '1d8',
+        img: 'kobold.gif',
+        desc: 'A dog like monster.'
+    },
+    zombie: {
+        name: 'Zombie',
+        exp: 5,
+        gold: '1d6',
+        str: 8,
+        end: 5,
+        spd: 9,
+        mhp: '1d12',
+        img: 'zombie2.png',
+        desc: 'An undead human feasting for brains.'
     }
 };
 
@@ -474,14 +496,12 @@ function generateEncounter() {
     }
 
     // encounter table per location?
-    let monster;
-    if (dice > 6) {
-        monster = new Monster(mobs.skeleton);
-    }
+    let types = Object.keys(mobs),
+        choose = roll(`1d${types.length}`) - 1,
+        mob = mobs[types[choose]],
+        monster = new Monster(mob);
 
-    if (dice < 7) {
-        monster = new Monster(mobs.goblin);
-    }
+    console.debug(types, choose, mob);
 
     startCombat(monster);
 }
@@ -525,6 +545,8 @@ function advanceCombatTurn() {
     if (whosTurn === 'monster') {
         combatMonster();
     }
+
+    player.renderStats();
 }
 
 function combatMonster() {
